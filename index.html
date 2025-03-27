@@ -45,7 +45,7 @@
         #qrcode{
             text-align: center;
             padding: 5%;
-            margin-left: 25%;
+            margin-left: 15%;
         }
         #list{
             padding: 2%;
@@ -62,11 +62,11 @@
       <h2>QR Code Generator</h2>
       <div><input type="text" id="text" placeholder="Enter any input"></div>
       <div id="list">
-        <label for="size">Select Sixe :</label>
-        <select id="size" name="size">
-            <option  id="one">100X200</option>
-            <option >200X300</option>
-            <option >300X400</option>
+        <label for="size">Select Size :</label>
+        <select id="size" name="size" onchange="Sizechange()">
+            <option value="150x150">150X150</option>
+            <option value="180x180">180X180</option>
+            <option value="200x200">200X200</option>
         </select>
       </div>
       <div id="qrcode"></div>
@@ -76,7 +76,15 @@
 
     <script>
         let qrcode;
+        let h =128;
+        let w =128;
         
+        function Sizechange(){
+            let sizeValue = document.getElementById("size").value.split("x");
+            h = parseInt(sizeValue[0]);
+            w = parseInt(sizeValue[1]);
+            generate();
+        }
         // Generate the QR Code
         function generate() {
             let input = document.getElementById("text").value;
@@ -89,16 +97,16 @@
             // Clear any existing QR code
             document.getElementById("qrcode").innerHTML = "";
 
-            // Create a new QR code
             qrcode = new QRCode(document.getElementById("qrcode"), {
                 text: input,
-                width: 128,
-                height: 128,
+                width: w,
+                height: h,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
         }
+
 
         // Download the QR Code as an image
         function download() {
