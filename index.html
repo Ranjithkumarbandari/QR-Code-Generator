@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        body{
+            margin: 0%;
+            padding: 0%;
+        }
+        #container{
+            text-align: center;
+            border: 2px solid black;
+           border-radius: 20%;
+           width: 300px;
+           height: 400px;
+           margin-left: 40%;
+           margin-top: 10%;
+        }
+        #generate{
+            padding: 1%;
+            margin: 1%;
+            color: #000;
+            background: linear-gradient(to right,rgba(255, 98, 0, 0.852),rgb(0, 217, 255));
+        }
+        #generate:hover{
+            transform: scale(1.2);
+        }
+        #generate:active{
+            transform: scale(0.6);
+        }
+        #download{
+            padding: 1%;
+            margin: 1%;
+            background: linear-gradient(to right,rgba(255, 98, 0, 0.852),rgb(0, 217, 255));
+        }
+        #download:hover{
+            transform: scale(1.2);
+        }
+        #download:active{
+            transform: scale(0.6);
+        }
+        #qrcode{
+            text-align: center;
+            padding: 5%;
+            margin-left: 25%;
+        }
+        #list{
+            padding: 2%;
+            margin: 2%;
+            display: flex;
+            justify-content: space-around;
+            align-items: start;
+        }
+       
+    </style>
+</head>
+<body>
+    <div id="container">
+      <h2>QR Code Generator</h2>
+      <div><input type="text" id="text" placeholder="Enter any input"></div>
+      <div id="list">
+        <label for="size">Select Sixe :</label>
+        <select id="size" name="size">
+            <option  id="one">100X200</option>
+            <option >200X300</option>
+            <option >300X400</option>
+        </select>
+      </div>
+      <div id="qrcode"></div>
+      <button onclick="generate()" id="generate">Generate</button>
+      <button onclick="download()" id="download">Download</button>
+    </div>
+
+    <script>
+        let qrcode;
+        
+        // Generate the QR Code
+        function generate() {
+            let input = document.getElementById("text").value;
+            
+            if (input === "") {
+                alert("Please enter some text or URL to generate the QR code.");
+                return;
+            }
+
+            // Clear any existing QR code
+            document.getElementById("qrcode").innerHTML = "";
+
+            // Create a new QR code
+            qrcode = new QRCode(document.getElementById("qrcode"), {
+                text: input,
+                width: 128,
+                height: 128,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Download the QR Code as an image
+        function download() {
+            if (!qrcode) {
+                alert("Please generate a QR code first.");
+                return;
+            }
+
+            // Get the canvas element of the QR code
+            const canvas = document.querySelector("#qrcode canvas");
+            if (canvas) {
+
+
+                // Create a temporary link element to download the image
+                const link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = "qrcode.png";
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>
